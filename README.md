@@ -1,37 +1,27 @@
 ## OVERVIEW:
 
-    Module: terraform-aws-ipsecvpn
+Module: terraform-aws-ipsecvpn
 
-    This module provisions an AWS Site-to-Site VPN connection using AWS VPN Gateway. Resources to be provisioned are the following:
+This module provisions an AWS Site-to-Site VPN connection using AWS VPN Gateway. Resources to be provisioned are the following:
 
-    - aws_customer_gateway: Creates a customer gateway representing the on-premises VPN device.
-    - aws_vpn_gateway: Optionally creates a virtual private gateway (VGW) and attaches it to the specified VPC.
-    - aws_vpn_gateway_attachment: Attaches the VGW to the VPC if created
-    - aws_vpn_connection: Establishes the VPN connection between the AWS VGW and the customer gateway, supporting both static and dynamic routing.
-        - Supports configuration of both tunnels, including IKE versions, inside CIDRs, preshared keys, DPD settings, and phase 1/2 parameters.
-        - Allows for either user-supplied or auto-generated preshared keys.
-    - random_password: Generates random preshared keys for each tunnel if not provided.
-    - random_id: Generates a random suffix for the Secrets Manager secret name to ensure uniqueness.
-    - aws_secretsmanager_secret & aws_secretsmanager_secret_version: Stores generated preshared keys securely in AWS Secrets Manager.
-    - data.aws_vpc: Optionally retrieves VPC information if a VPC ID is provided.
+- aws_customer_gateway: Creates a customer gateway representing the on-premises VPN device.
+- aws_vpn_gateway: Optionally creates a virtual private gateway (VGW) and attaches it to the specified VPC.
+- aws_vpn_gateway_attachment: Attaches the VGW to the VPC if created
+- aws_vpn_connection: Establishes the VPN connection between the AWS VGW and the customer gateway, supporting both static and dynamic routing.
+    - Supports configuration of both tunnels, including IKE versions, inside CIDRs, preshared keys, DPD settings, and phase 1/2 parameters.
+    - Allows for either user-supplied or auto-generated preshared keys.
+- random_password: Generates random preshared keys for each tunnel if not provided.
+- random_id: Generates a random suffix for the Secrets Manager secret name to ensure uniqueness.
+- aws_secretsmanager_secret & aws_secretsmanager_secret_version: Stores generated preshared keys securely in AWS Secrets Manager.
+- data.aws_vpc: Optionally retrieves VPC information if a VPC ID is provided.
 
-    Variables:
-        - var.customer_gw: Customer gateway configuration (ASN, IP, type, name).
-        - var.vpc_details: VPC details (VPC ID).
-        - var.create_vgw: Boolean to control VGW creation.
-        - var.vpn_gw_name: Name tag for the VGW.
-        - var.gen_vpn_settings: General VPN settings (VGW ID, static routes, CIDRs).
-        - var.tunnel_settings: Tunnel configuration (IKE versions, preshared key, DPD, phase 1/2 settings).
-
-    Features:
-        - Ensures resources are created with proper dependencies and lifecycle management.
-        - Supports secure, automated management of VPN preshared keys.
-        - Tags resources for easier identification.
-
-    Usage:
-        - Import this module and provide the required variables to deploy a fully managed AWS VPN connection.
-        - Optionally, allow the module to generate and store preshared keys in AWS Secrets Manager for secure retrieval.
-
+Variables:
+- var.customer_gw: Customer gateway configuration (ASN, IP, type, name).
+- var.vpc_details: VPC details (VPC ID).
+- var.create_vgw: Boolean to control VGW creation.
+- var.vpn_gw_name: Name tag for the VGW.
+- var.gen_vpn_settings: General VPN settings (VGW ID, static routes, CIDRs).
+- var.tunnel_settings: Tunnel configuration (IKE versions, preshared key, DPD, phase 1/2 settings).
 
 
 
@@ -125,12 +115,12 @@ variable "xyz_vpn_config" {
       region = "eu-west-1"
     }
     // vpn_gw_name
-    vpn_gw_name = "kraado_vpn"
+    vpn_gw_name = "xyz_vpn"
 
     // customer_gw
     customer_gw = {
       ip_address = "41.218.223.10"
-      name       = "kraado_customer_gw"
+      name       = "xyz_customer_gw"
       type       = "ipsec.1"
     }
 
@@ -158,8 +148,8 @@ locals {
 
 
 // VPN details output
-output "kraado_vpn_details" {
-  value = module.kraado_vpn.ipsec_vpn_details
+output "xyz_vpn_details" {
+  value = module.xyz_vpn.ipsec_vpn_details
 }
 
 
